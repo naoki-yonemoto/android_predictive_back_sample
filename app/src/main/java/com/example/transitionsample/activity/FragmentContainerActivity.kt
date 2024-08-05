@@ -23,8 +23,14 @@ class FragmentContainerActivity: AppCompatActivity() {
 		}
 	}
 	
-	 fun onBack(){
-		Log.d("FragmentContainerActivity", "onBack Pressed")
-		finish()
+	 private fun onBack(){
+		Log.d("FragmentContainerActivity", "onBack()")
+		 if(supportFragmentManager.backStackEntryCount >= 1){
+			 Log.d("FragmentContainerActivity", "popBackStack")
+			 supportFragmentManager.popBackStack()
+		 } else {
+			 Log.d("FragmentContainerActivity", "finish")
+			 finish()
+		 }
 	}
 }

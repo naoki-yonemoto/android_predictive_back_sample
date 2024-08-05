@@ -6,21 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.window.OnBackInvokedCallback
-import androidx.activity.OnBackPressedCallback
-import androidx.activity.addCallback
 import com.example.transitionsample.R
-import com.example.transitionsample.databinding.FragmentSecondBinding
+import com.example.transitionsample.databinding.FragmentThirdBinding
 import com.example.transitionsample.util.Transit
-import com.example.transitionsample.util.onBackAction
+import com.example.transitionsample.util.registerBackAction
+import com.example.transitionsample.util.unregisterBackAction
 
-class SecondFragment : BaseFragment() {
+class ThirdFragment: BaseFragment() {
 	
-	private var _binding : FragmentSecondBinding? = null
+	private var _binding : FragmentThirdBinding? = null
 	private val binding get() = _binding!!
+	private var backPressedCallback : OnBackInvokedCallback? = null
 	
 	override fun onCreateView(inflater : LayoutInflater, container : ViewGroup?, savedInstanceState : Bundle?) : View {
 		super.onCreateView(inflater, container, savedInstanceState)
-		_binding = FragmentSecondBinding.inflate(inflater, container, false)
+		_binding = FragmentThirdBinding.inflate(inflater, container, false)
 		return binding.root
 	}
 	
@@ -29,18 +29,21 @@ class SecondFragment : BaseFragment() {
 		
 		binding.button.setOnClickListener {
 			Transit.slide(parentFragmentManager)
-				.replace(R.id.container, ThirdFragment())
+				.replace(R.id.container, ForthFragment())
 				.addToBackStack("third")
 				.commit()
 		}
 		
-		onBackAction {
-			Log.d("SecondFragment", "onBack")
+		backPressedCallback = registerBackAction {
+			Log.d("ThirdFragment", "onBack")
 		}
 	}
 	
 	override fun onDestroyView() {
 		super.onDestroyView()
+		backPressedCallback?.let {
+			unregisterBackAction(it)
+		}
 		_binding = null
 	}
 }

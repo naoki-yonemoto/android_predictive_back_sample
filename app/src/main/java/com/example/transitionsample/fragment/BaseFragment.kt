@@ -16,19 +16,4 @@ open class BaseFragment : Fragment() {
 		setTransitAnimation()
 		return super.onCreateView(inflater, container, savedInstanceState)
 	}
-	
-	open fun onBack(){
-		Log.d("BaseFragment", "onBack()")
-		
-		
-//		val activity = requireActivity()
-//		if(activity is FragmentContainerActivity){
-//			activity.onBack()
-//		}
-		
-//		parentFragmentManager.let { fragmentManager ->
-//			val canBack = fragmentManager.backStackEntryCount >= 1
-//			if (canBack) fragmentManager.popBackStack()
-//		}
-	}
 }

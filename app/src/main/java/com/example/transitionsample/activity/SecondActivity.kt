@@ -22,5 +22,9 @@ class SecondActivity : BaseActivity() {
 			val intent = Intent(this, ThirdActivity::class.java)
 			startActivity(intent)
 		}
+		
+		onBackPressedAction {
+			finish()
+		}
 	}
 }

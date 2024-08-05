@@ -23,34 +23,15 @@ fun Activity.transitionAnimation() {
 	}
 }
 
-fun Activity.onBackPressedAction(onBackPressed : () -> Unit){
-	if(Build.VERSION.SDK_INT >= 34) {
-		val onBackInvokeCallback = OnBackInvokedCallback {
-			Log.d("onBackInvokeCallback" , "onBack invoke")
-			onBackPressed.invoke()
-		}
-		onBackInvokedDispatcher.registerOnBackInvokedCallback(
-			OnBackInvokedDispatcher.PRIORITY_DEFAULT,
-			onBackInvokeCallback)
-		
-	} else {
-		val onBackPressedCallBack = object : OnBackPressedCallback(true) {
-			override fun handleOnBackPressed() {
-				Log.d("onBackPressedDispatcher" , "onBack invoke")
-				onBackPressed.invoke()
-			}
-		}
-		(this as ComponentActivity).onBackPressedDispatcher.addCallback(this, onBackPressedCallBack)
-		
-	}
-	
-	//    val onBackPressedCallBack = object : OnBackPressedCallback(true) {
-	//        override fun handleOnBackPressed() {
-	//            onBackPressed()
-	//        }
-	//    }
-	//    (this as ComponentActivity).onBackPressedDispatcher.addCallback(this, onBackPressedCallBack)
-	//
+fun Activity.onBackPressedAction(action : () -> Unit){
+	    val onBackPressedCallBack = object : OnBackPressedCallback(true) {
+	        override fun handleOnBackPressed() {
+				Log.d("onBackPressedDispatcher" , "onBackPressed")
+				action.invoke()
+	        }
+	    }
+	    (this as ComponentActivity).onBackPressedDispatcher.addCallback(this, onBackPressedCallBack)
+
 	
 	//    val transitionSet = TransitionSet().apply {
 	//        setOrdering(TransitionSet.ORDERING_SEQUENTIAL)
@@ -88,4 +69,28 @@ fun Activity.onBackPressedAction(onBackPressed : () -> Unit){
 	//    }
 	//    (this as ComponentActivity).onBackPressedDispatcher.addCallback(this, onBackPressedCallBack)
 	//
+}
+
+
+fun Activity.registerBackAction(action : () -> Unit): OnBackInvokedCallback? {
+	return if(Build.VERSION.SDK_INT >= 34) {
+		val onBackInvokeCallback = OnBackInvokedCallback {
+			Log.d("onBackInvokeCallback" , "onBackInvoke")
+			action.invoke()
+		}
+		onBackInvokedDispatcher.registerOnBackInvokedCallback(
+			OnBackInvokedDispatcher.PRIORITY_DEFAULT,
+			onBackInvokeCallback
+		)
+		
+		return onBackInvokeCallback
+	} else {
+		null
+	}
+}
+
+fun Activity.unregisterBackAction(callback : OnBackInvokedCallback){
+	if(Build.VERSION.SDK_INT >= 34) {
+		onBackInvokedDispatcher.unregisterOnBackInvokedCallback(callback)
+	}
 }

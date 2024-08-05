@@ -25,7 +25,7 @@ class FirstFragment: BaseFragment() {
 		binding.button.setOnClickListener {
 			Transit.slide(parentFragmentManager)
 				.replace(R.id.container, SecondFragment())
-				.addToBackStack(null)
+				.addToBackStack("second")
 				.commit()
 		}
 	}
