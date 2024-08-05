@@ -2,14 +2,18 @@ package com.example.transitionsample.activity
 
 import android.os.Bundle
 import android.util.Log
+import android.window.OnBackInvokedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.example.transitionsample.databinding.ActivityFragmentContainerBinding
 import com.example.transitionsample.util.onBackPressedAction
+import com.example.transitionsample.util.registerBackAction
 import com.example.transitionsample.util.transitionAnimation
+import com.example.transitionsample.util.unregisterBackAction
 
 class FragmentContainerActivity: AppCompatActivity() {
 	
 	private lateinit var binding : ActivityFragmentContainerBinding
+	private var backPressedCallback : OnBackInvokedCallback? = null
 	
 	override fun onCreate(savedInstanceState : Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -18,7 +22,7 @@ class FragmentContainerActivity: AppCompatActivity() {
 		binding = ActivityFragmentContainerBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 		
-		onBackPressedAction {
+		backPressedCallback = registerBackAction {
 			onBack()
 		}
 	}
@@ -32,5 +36,12 @@ class FragmentContainerActivity: AppCompatActivity() {
 			 Log.d("FragmentContainerActivity", "finish")
 			 finish()
 		 }
+	}
+	
+	override fun onDestroy() {
+		super.onDestroy()
+		backPressedCallback?.let {
+			unregisterBackAction(it)
+		}
 	}
 }

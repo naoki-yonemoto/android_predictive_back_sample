@@ -23,6 +23,8 @@ fun Activity.transitionAnimation() {
 	}
 }
 
+
+
 fun Activity.onBackPressedAction(action : () -> Unit){
 	    val onBackPressedCallBack = object : OnBackPressedCallback(true) {
 	        override fun handleOnBackPressed() {
