@@ -15,12 +15,12 @@ class ThirdActivity : BaseActivity() {
 		binding = ActivityThirdBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 		
-		onBackPressedAction(binding.root){
+		onBackPressedAction {
 			onBack()
 		}
 	}
 	
-	private fun onBack(){
+	 fun onBack(){
 		Log.d("ThirdActivity", "onBackPressed CallBack")
 		finish()
 	}

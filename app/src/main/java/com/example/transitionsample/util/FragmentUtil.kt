@@ -1,6 +1,8 @@
 package com.example.transitionsample.util
 
+import android.util.Log
 import android.view.Gravity
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.transition.*
 import androidx.transition.TransitionSet.ORDERING_SEQUENTIAL
@@ -25,4 +27,16 @@ fun Fragment.setTransitAnimation(){
 	
 	enterTransition = enterAnim
 	exitTransition = exitAnim
+}
+
+fun Fragment.onBack(action : () -> Unit){
+	requireActivity().onBackPressedDispatcher.addCallback(
+		object : OnBackPressedCallback(true){
+			override fun handleOnBackPressed() {
+				Log.d("Fragment.onBackPressedDispatcher", "onBack invoke")
+				action.invoke()
+				requireActivity().supportFragmentManager.popBackStack()
+			}
+		}
+	)
 }

@@ -2,7 +2,7 @@ package com.example.transitionsample.util
 
 import android.app.Activity
 import android.os.Build
-import android.view.ViewGroup
+import android.util.Log
 import android.window.OnBackInvokedCallback
 import android.window.OnBackInvokedDispatcher
 import androidx.activity.ComponentActivity
@@ -23,10 +23,11 @@ fun Activity.transitionAnimation() {
 	}
 }
 
-fun Activity.onBackPressedAction(rootView: ViewGroup, onBackPressed:() -> Unit){
+fun Activity.onBackPressedAction(onBackPressed : () -> Unit){
 	if(Build.VERSION.SDK_INT >= 34) {
 		val onBackInvokeCallback = OnBackInvokedCallback {
-			onBackPressed()
+			Log.d("onBackInvokeCallback" , "onBack invoke")
+			onBackPressed.invoke()
 		}
 		onBackInvokedDispatcher.registerOnBackInvokedCallback(
 			OnBackInvokedDispatcher.PRIORITY_DEFAULT,
@@ -35,7 +36,8 @@ fun Activity.onBackPressedAction(rootView: ViewGroup, onBackPressed:() -> Unit){
 	} else {
 		val onBackPressedCallBack = object : OnBackPressedCallback(true) {
 			override fun handleOnBackPressed() {
-				onBackPressed()
+				Log.d("onBackPressedDispatcher" , "onBack invoke")
+				onBackPressed.invoke()
 			}
 		}
 		(this as ComponentActivity).onBackPressedDispatcher.addCallback(this, onBackPressedCallBack)
